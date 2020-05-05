@@ -12,7 +12,8 @@ var tempLineGraph = new Chart(tempGraph, {
         datasets:[{
             label:'Patient Temperature',
             borderWidth:2,
-            backgroundColor: 'rgba(0, 0, 200, 0.6)',
+            backgroundColor: 'rgba(0, 0, 200, 0)',
+            borderColor: 'rgba(0, 0, 200, 0.6)',
             data: [35]
         }]
     },
@@ -36,7 +37,8 @@ var bpmLineGraph = new Chart(bpmGraph, {
         datasets:[{
             label:'Patient Heart Rate',
             borderWidth:2,
-            backgroundColor: 'rgba(200, 0, 0, 0.6)',
+            backgroundColor: 'rgba(200, 0, 0, 0)',
+            borderColor:'rgba(200, 0, 0, 0.6)',
             data: [35]
         }]
     },
