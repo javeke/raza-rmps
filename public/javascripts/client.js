@@ -28,8 +28,8 @@ var tempLineGraph = new Chart(tempGraph, {
                     fontColor: 'black'
                 },
                 ticks:{ 
-                    max: 40, 
-                    min: 25, 
+                    max: 37, 
+                    min: 30, 
                     stepSize: 1 
                 }
             }]
