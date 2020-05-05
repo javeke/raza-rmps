@@ -3,7 +3,7 @@ var router = express.Router();
 
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const url = process.env.MONGOLAB_URI || 'mongodb+srv://raza:razadb@cluster0-laeon.azure.mongodb.net';
+const url = process.env.MONGOLAB_URI || 'mongodb://localhost:27017';
 const dbName = 'hospital';
 
 var bpm = 88;
@@ -32,20 +32,20 @@ router.post('/',(req, resp)=>{
   } 
   console.log(req.body);
   resp.sendStatus(200);
-  MongoClient.connect(url, (err, client)=>{
-    assert.equal(null, err);
-    console.log("CONNECTED TO DATABASE");
+  // MongoClient.connect(url, (err, client)=>{
+  //   assert.equal(null, err);
+  //   console.log("CONNECTED TO DATABASE");
 
-    const db = client.db(dbName);
+  //   const db = client.db(dbName);
 
-    db.collection('patients').insertOne({"Heart Rate": req.body.bpm, 
-      "Temperature":req.body.temp, "Position":req.body.pos},
-      (err,result)=>{
-        assert.equal(err, null);
-        client.close();
-      }
-    );
-  });
+  //   db.collection('patients').insertOne({"Heart Rate": req.body.bpm, 
+  //     "Temperature":req.body.temp, "Position":req.body.pos},
+  //     (err,result)=>{
+  //       assert.equal(err, null);
+  //       client.close();
+  //     }
+  //   );
+  // });
 });
 
 module.exports = router;
