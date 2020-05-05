@@ -18,8 +18,15 @@ var tempLineGraph = new Chart(tempGraph, {
         }]
     },
     options:{
+        responsive: true,
         scales:{
             yAxes:[{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Temperature (C)',
+                    fontSize: 14,
+                    fontColor: 'black'
+                },
                 ticks:{ 
                     max: 40, 
                     min: 25, 
@@ -43,8 +50,15 @@ var bpmLineGraph = new Chart(bpmGraph, {
         }]
     },
     options:{
+        responsive: true,
         scales:{
             yAxes:[{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Heart Rate (bpm)',
+                    fontSize: 14,
+                    fontColor: 'black'
+                },
                 ticks:{ 
                     max: 100, 
                     min: 70, 
