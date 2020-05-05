@@ -3,7 +3,7 @@ var router = express.Router();
 
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const url = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+const url = process.env.MONGOLAB_URI || 'mongodb://localhost:27017';
 const dbName = 'hospital';
 
 var bpm = 88;
