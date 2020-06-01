@@ -3,16 +3,25 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-h3{
+.normal{
   padding-left: 20px;
   padding-top: 5px;
   padding-bottom: 5px;
-  color: rgba(0, 0, 200, 0.9);
 }
+
+.alarm{
+  color: rgba(200, 197, 0, 0.9);
+  background-color: rgba(200, 0, 0, 0.9);
+}
+
+.safe{
+  color: rgba(0, 0, 200, 0.9);
+  background-color: rgba(255, 255, 225, 0.9);
+}
+
 
 #display{
   margin-top: 50;
-  background-color: rgba(255, 255, 225, 0.9);
   justify-content: center;
   align-items: center;
 }

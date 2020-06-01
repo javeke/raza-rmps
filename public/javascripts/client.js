@@ -1,7 +1,9 @@
 var reloadId; 
+var display = document.getElementById('display');
 var bpm =  document.getElementsByName("bpm")[0];
 var temp =  document.getElementsByName("temp")[0];
 var pos =  document.getElementsByName("pos")[0];
+var alarm =  document.getElementsByName("alarm")[0];
 var tempGraph = document.getElementById('temp-graph').getContext('2d');
 var bpmGraph = document.getElementById('bpm-graph').getContext('2d');
 
@@ -14,7 +16,7 @@ var tempLineGraph = new Chart(tempGraph, {
             borderWidth:2,
             backgroundColor: 'rgba(0, 0, 200, 0)',
             borderColor: 'rgba(0, 0, 200, 0.6)',
-            data: [35]
+            data: [0,0,0,0,0,0,0,0,0,0]
         }]
     },
     options:{
@@ -46,7 +48,7 @@ var bpmLineGraph = new Chart(bpmGraph, {
             borderWidth:2,
             backgroundColor: 'rgba(200, 0, 0, 0)',
             borderColor:'rgba(200, 0, 0, 0.6)',
-            data: [35]
+            data: [0,0,0,0,0,0,0,0,0,0]
         }]
     },
     options:{
@@ -77,43 +79,63 @@ var bpmlabels =bpmLineGraph.data.labels;
 var bpmdata = bpmLineGraph.data.datasets[0].data;
 
 var reload = function(){
-    reloadId = setInterval(test, 500);
+    setInterval(test, 500);
 };
+
+var resp = [];
 
 var test = function (){
     var request = new XMLHttpRequest();
+    var latest = {};
     request.open("GET", 'update', true);
     request.send();
     
     request.onreadystatechange = function(){
         if (this.readyState==4 && this.status==200){
-            let resp = JSON.parse(this.response);
-            bpm.value =  resp.bpm==null? 88 :resp.bpm;
-            temp.value =  resp.temp==null? 35 :resp.temp;
-            pos.value =  resp.pos==null? "back" :resp.pos;
+
+            resp = JSON.parse(this.response);
+            resp =  resp.reverse();
+            latest = resp[resp.length-1];
+            
+            
+            bpm.value =  latest.HeartRate==null? 88 :latest.HeartRate;
+            temp.value =  latest.Temperature==null? 35 :latest.Temperature;
+            pos.value =  latest.Position==null? "back" :latest.Position;
+            if (latest.Alarm =="0" || latest.Alarm==null){
+                alarm.value = "false";
+            }
+            else{
+                alarm.value="true";
+            }
+
+            if (alarm.value=="true"){
+                display.classList.add('alarm');
+                display.classList.remove('safe');
+            }
+            else{
+                display.classList.remove('alarm');
+                display.classList.add('safe');
+            }
+            
+            resp.forEach(element => {
+                tempdata.shift();
+                tempdata.push(Number(element.Temperature));
+                templabels.shift();
+                templabels.push(element.Time);
+
+                bpmdata.shift();
+                bpmdata.push(Number(element.HeartRate))
+                bpmlabels.shift();
+                bpmlabels.push(element.Time);
+            });
+            
+            console.log(resp);
+
+            tempLineGraph.update();
+            bpmLineGraph.update();
+
         }
     };
-    
-    if(tempdata.length<6){
-        bpmdata.push(bpm.value);
-        tempdata.push(temp.value);
-    }
-    else{
-        
-        templabels.shift();
-        templabels.push('');
-        
-        bpmlabels.shift();
-        bpmlabels.push(''); 
-        
-        tempdata.shift();
-        tempdata.push(temp.value); 
-        
-        bpmdata.shift();
-        bpmdata.push(bpm.value);
-    }
-    tempLineGraph.update();
-    bpmLineGraph.update();
 }
 
 reload();
