@@ -1,5 +1,6 @@
 var reloadId; 
 var display = document.getElementById('display');
+var notice =  document.getElementById('notice');
 var bpm =  document.getElementsByName("bpm")[0];
 var temp =  document.getElementsByName("temp")[0];
 var pos =  document.getElementsByName("pos")[0];
@@ -95,8 +96,7 @@ var test = function (){
 
             resp = JSON.parse(this.response);
             resp =  resp.reverse();
-            latest = resp[resp.length-1];
-            
+            latest = resp[resp.length-1];           
             
             bpm.value =  latest.HeartRate==null? 88 :latest.HeartRate;
             temp.value =  latest.Temperature==null? 35 :latest.Temperature;
@@ -109,12 +109,10 @@ var test = function (){
             }
 
             if (alarm.value=="true"){
-                display.classList.add('alarm');
-                display.classList.remove('safe');
+                display.classList.replace("safe", "alarm");
             }
             else{
-                display.classList.remove('alarm');
-                display.classList.add('safe');
+                display.classList.replace("alarm","safe");
             }
             
             resp.forEach(element => {
@@ -128,12 +126,26 @@ var test = function (){
                 bpmlabels.shift();
                 bpmlabels.push(element.Time);
             });
-            
-            console.log(resp);
 
             tempLineGraph.update();
             bpmLineGraph.update();
+            
+            
+            let ss = Number(latest.Time.slice(6,8))
+            let mm = Number(latest.Time.slice(3,5));
+            let hh = Number(latest.Time.slice(0,2));
 
+            let t  = new Date();
+            
+            if ( hh== t.getHours() && mm == t.getMinutes() && ( t.getSeconds-ss< 8)){
+                console.log("hidden");
+                notice.style.visibility = "hidden";
+                
+            }
+            else{
+                console.log("visible");
+                notice.style.visibility = "visible";
+            }
         }
     };
 }
